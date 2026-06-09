@@ -1,0 +1,85 @@
+.pageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0;
+  gap: 14px;
+}
+
+.pageTitle h1 {
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+}
+
+.pageTitle p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.statCard {
+  padding: 22px;
+  display: grid;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+}
+
+.statCard svg {
+  color: var(--primary);
+}
+
+.statCard span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.statCard b {
+  font-size: 32px;
+}
+
+.sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0;
+  gap: 14px;
+}
+
+.sectionHead h2 {
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+}
+
+.sectionHead p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.ordersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1000px) {
+  .statsGrid,
+  .ordersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .pageTitle,
+  .sectionHead {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

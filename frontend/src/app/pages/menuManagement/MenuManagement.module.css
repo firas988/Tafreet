@@ -1,0 +1,36 @@
+.pageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0;
+  gap: 14px;
+}
+
+.pageTitle h1 {
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+}
+
+.pageTitle p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.managementGrid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 18px;
+}
+
+@media (max-width: 1000px) {
+  .managementGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .pageTitle {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

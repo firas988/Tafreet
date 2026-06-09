@@ -1,0 +1,66 @@
+.orderCard {
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+}
+
+.orderHead,
+.orderFoot {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.orderHead h3 {
+  margin: 5px 0;
+  font-size: 26px;
+}
+
+.orderHead p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.smallLabel {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.orderItems {
+  margin: 18px 0;
+  display: grid;
+  gap: 10px;
+}
+
+.orderItems div {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px;
+  border-radius: 14px;
+  background: #fff7ee;
+}
+
+.orderFoot {
+  color: var(--muted);
+}
+
+.orderFoot b {
+  color: var(--text);
+  font-size: 20px;
+}
+
+.actionRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.actionRow .btn {
+  padding: 10px;
+  font-size: 13px;
+}

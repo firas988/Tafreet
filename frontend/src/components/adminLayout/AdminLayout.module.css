@@ -1,0 +1,20 @@
+.adminShell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.adminMain {
+  padding: 30px;
+  overflow-x: hidden;
+}
+
+@media (max-width: 1000px) {
+  .adminShell {
+    grid-template-columns: 1fr;
+  }
+
+  .adminMain {
+    padding: 16px;
+  }
+}

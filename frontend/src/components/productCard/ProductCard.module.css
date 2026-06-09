@@ -1,0 +1,69 @@
+.productCard {
+  position: relative;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.09);
+}
+
+.productCard img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.floatingBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 99px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.productInfo {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.productInfo h3 {
+  margin: 0 0 7px;
+}
+
+.productInfo p {
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.priceRow b {
+  font-size: 22px;
+}
+
+.roundBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  background: var(--primary-dark);
+  color: white;
+  font-size: 24px;
+}
+
+@media (max-width: 620px) {
+  .productCard img {
+    height: 180px;
+  }
+}

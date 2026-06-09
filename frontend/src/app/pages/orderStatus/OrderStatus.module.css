@@ -1,0 +1,80 @@
+.customerPage {
+  width: min(1120px, calc(100% - 28px));
+  margin: auto;
+  padding: 28px 0 60px;
+}
+
+.statusPage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.statusCard {
+  width: min(620px, 100%);
+  text-align: center;
+  padding: 34px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+}
+
+.successIcon {
+  margin: 0 auto 14px;
+  width: 88px;
+  height: 88px;
+  border-radius: 30px;
+  display: grid;
+  place-items: center;
+  color: white;
+  background: linear-gradient(135deg, #4caf76, #1f7a4b);
+}
+
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 28px 0;
+}
+
+.step {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px 8px;
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  font-weight: 800;
+}
+
+.step svg {
+  width: 22px;
+  height: 22px;
+}
+
+.done,
+.active {
+  color: white;
+  background: var(--primary);
+}
+
+.active {
+  background: var(--primary-dark);
+}
+
+.estimateBox {
+  background: #fff4e6;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 620px) {
+  .timeline {
+    grid-template-columns: 1fr;
+  }
+}

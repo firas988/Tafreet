@@ -1,0 +1,57 @@
+.panel {
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.productManageRow {
+  display: grid;
+  grid-template-columns: 74px 1fr auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.productManageRow img {
+  width: 74px;
+  height: 64px;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+.productManageRow h3 {
+  margin: 0 0 5px;
+}
+
+.productManageRow p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+}
+
+.rowActions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #fff4e6;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 620px) {
+  .productManageRow {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}

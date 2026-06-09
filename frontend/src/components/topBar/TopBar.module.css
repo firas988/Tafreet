@@ -1,0 +1,68 @@
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 22px;
+  background: rgba(44, 28, 18, 0.96);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.brandIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.14);
+  display: grid;
+  place-items: center;
+}
+
+.brand h2 {
+  margin: 0;
+}
+
+.brand p {
+  margin: 3px 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+}
+
+.navLinks {
+  display: grid;
+  gap: 8px;
+}
+
+.navItem {
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 800;
+}
+
+.navItem:hover,
+.active {
+  color: white;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.logout {
+  margin-top: auto;
+}
+
+@media (max-width: 1000px) {
+  .sidebar {
+    position: relative;
+    height: auto;
+  }
+}

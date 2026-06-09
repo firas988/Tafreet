@@ -1,0 +1,105 @@
+.loginPage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  padding: 28px;
+  gap: 28px;
+}
+
+.loginArt {
+  border-radius: 36px;
+  background:
+    linear-gradient(rgba(30, 18, 10, 0.18), rgba(30, 18, 10, 0.42)),
+    url("https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1600&q=80");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  min-height: 540px;
+  box-shadow: var(--shadow);
+}
+
+.glassCard {
+  width: min(520px, 100%);
+  border-radius: 30px;
+  padding: 32px;
+  color: white;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+}
+
+.glassCard h1 {
+  font-size: 58px;
+  margin: 14px 0 10px;
+  letter-spacing: -2px;
+}
+
+.glassCard p {
+  font-size: 18px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.loginCard {
+  align-self: center;
+  justify-self: center;
+  width: min(460px, 100%);
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 34px;
+  padding: 36px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.loginCard h2 {
+  font-size: 38px;
+  margin: 18px 0 8px;
+  letter-spacing: -1px;
+}
+
+.loginCard p {
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+.loginCard label {
+  display: block;
+  margin: 18px 0;
+}
+
+.loginCard label span {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.inputIcon {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 0 14px;
+}
+
+.inputIcon input {
+  border: 0;
+  outline: 0;
+  padding: 16px 0;
+  width: 100%;
+  background: transparent;
+}
+
+@media (max-width: 1000px) {
+  .loginPage {
+    grid-template-columns: 1fr;
+  }
+
+  .loginArt {
+    display: none;
+  }
+}
