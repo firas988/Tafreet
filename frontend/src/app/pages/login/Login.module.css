@@ -103,6 +103,33 @@
   background: transparent;
 }
 
+.passwordWrap {
+  position: relative;
+}
+
+.passwordWrap .inputIcon {
+  padding-right: 48px;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #fff7ee;
+  color: var(--primary-dark);
+  display: grid;
+  place-items: center;
+  transition: background 0.2s ease;
+}
+
+.eyeBtn:hover {
+  background: #ffe8cc;
+}
+
 @media (max-width: 1000px) {
   .loginPage {
     grid-template-columns: 1fr;

@@ -8,13 +8,12 @@ import WorkerOrders from "./pages/workerOrders/WorkerOrders.jsx";
 import MenuManagement from "./pages/menuManagement/MenuManagement.jsx";
 import StaffManagement from "./pages/staffManagement/StaffManagement.jsx";
 import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
+import NotFound from "./pages/notFound/NotFound.jsx";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/menu/public/table/1" />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/menu" element={<Navigate to="/menu/public/table/1" />} />
       <Route
         path="/menu/public/table/:tableNumber"
         element={<CustomerMenu />}
@@ -26,6 +25,7 @@ export default function App() {
       <Route path="/admin/staff" element={<StaffManagement />} />
       <Route path="/admin/history" element={<OrderHistory />} />
       <Route path="/worker" element={<WorkerOrders />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

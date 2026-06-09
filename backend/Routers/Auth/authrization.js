@@ -6,8 +6,12 @@ const { loginUtils } = require("../../Utils/Auth/login.utils");
 // login router.
 router.post("/login", async (req, res) => {
   try {
-    if(req.session.user_id){
-      return res.status(200).json({ success: true, message: "User is already logged in" });
+    if (req.session.user_id) {
+      return res.status(200).json({
+        success: true,
+        message: "User is already logged in",
+        user: req.session.user,
+      });
     }
     const { email, password } = req.body;
     const result = await loginUtils(email, password);

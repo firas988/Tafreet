@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, Mail, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
 import { login } from "../../../api/auth.service.js";
 import classes from "./Login.module.css";
 
@@ -10,6 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,17 +25,23 @@ export default function Login() {
         return;
       }
 
-      if (result.user?.role === "admin") {
+      const role = result.user?.role?.toLowerCase();
+
+      if (role === "admin") {
         navigate("/admin");
         return;
       }
 
-      if (result.user?.role === "worker") {
+      if (role === "worker") {
         navigate("/worker");
         return;
       }
 
-      setError("Unknown user role");
+      setError(
+        result.user
+          ? `Unknown user role: ${result.user.role}`
+          : "Login succeeded but user data was missing. Try again.",
+      );
     } catch (err) {
       setError(err.response?.data?.message || "Could not connect to server");
     } finally {
@@ -78,15 +85,25 @@ export default function Login() {
 
         <label>
           <span>Password</span>
-          <div className={classes.inputIcon}>
-            <Lock size={18} />
-            <input
-              placeholder="••••••••"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+          <div className={classes.passwordWrap}>
+            <div className={classes.inputIcon}>
+              <Lock size={18} />
+              <input
+                placeholder="••••••••"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button
+              className={classes.eyeBtn}
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
         </label>
 
