@@ -1,8 +1,47 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Lock, Mail, Sparkles } from "lucide-react";
+import { login } from "../../../api/auth.service.js";
 import classes from "./Login.module.css";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const result = await login({ email, password });
+
+      if (!result.success) {
+        setError(result.message || "Login failed");
+        return;
+      }
+
+      if (result.user?.role === "admin") {
+        navigate("/admin");
+        return;
+      }
+
+      if (result.user?.role === "worker") {
+        navigate("/worker");
+        return;
+      }
+
+      setError("Unknown user role");
+    } catch (err) {
+      setError(err.response?.data?.message || "Could not connect to server");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={classes.loginPage}>
       <div className={classes.loginArt}>
@@ -16,16 +55,24 @@ export default function Login() {
         </div>
       </div>
 
-      <form className={classes.loginCard}>
+      <form className={classes.loginCard} onSubmit={handleSubmit}>
         <span className="pill">Restaurant Portal</span>
         <h2>Welcome back</h2>
-        <p>Login as admin or worker to manage live orders.</p>
+        <p>Login to manage live orders.</p>
+
+        {error && <p className={classes.error}>{error}</p>}
 
         <label>
           <span>Email</span>
           <div className={classes.inputIcon}>
             <Mail size={18} />
-            <input placeholder="admin@restaurant.com" type="email" />
+            <input
+              placeholder="admin@restaurant.com"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
         </label>
 
@@ -33,16 +80,19 @@ export default function Login() {
           <span>Password</span>
           <div className={classes.inputIcon}>
             <Lock size={18} />
-            <input placeholder="••••••••" type="password" />
+            <input
+              placeholder="••••••••"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
         </label>
 
-        <Link className="btn full" to="/admin">
-          Login as Admin
-        </Link>
-        <Link className="btn light full" to="/worker">
-          Login as Worker
-        </Link>
+        <button className="btn full" type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
       </form>
     </div>
   );

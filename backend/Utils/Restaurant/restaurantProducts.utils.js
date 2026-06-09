@@ -52,6 +52,10 @@ const addRestaurantProduct = async (
       );
     }
 
+    if (!Array.isArray(categorie_ids) || categorie_ids.length === 0) {
+      throw new Error("At least one category is required");
+    }
+
     const productQuery =
       "INSERT INTO products (product_name, product_price, description, image_path) VALUES (?, ?, ?, ?)";
     const [productResult] = await db
@@ -106,6 +110,10 @@ const updateRestaurantProduct = async (
       throw new Error(
         "product_name, product_price, and description are required",
       );
+    }
+
+    if (!Array.isArray(categorie_ids) || categorie_ids.length === 0) {
+      throw new Error("At least one category is required");
     }
 
     const [existing] = await db

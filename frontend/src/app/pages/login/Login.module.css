@@ -65,6 +65,15 @@
   margin-bottom: 28px;
 }
 
+.error {
+  color: #aa3131;
+  background: #ffe7e7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
 .loginCard label {
   display: block;
   margin: 18px 0;

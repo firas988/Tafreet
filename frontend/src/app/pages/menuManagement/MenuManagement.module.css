@@ -16,6 +16,27 @@
   color: var(--muted);
 }
 
+.pageActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.error {
+  color: #aa3131;
+  background: #ffe7e7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+.empty {
+  margin: 0 0 18px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
 .managementGrid {
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
@@ -32,5 +53,14 @@
   .pageTitle {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .pageActions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .pageActions .btn {
+    width: 100%;
   }
 }

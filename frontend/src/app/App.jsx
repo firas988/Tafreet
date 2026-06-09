@@ -12,9 +12,13 @@ import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/menu" />} />
+      <Route path="/" element={<Navigate to="/menu/public/table/1" />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/menu" element={<CustomerMenu />} />
+      <Route path="/menu" element={<Navigate to="/menu/public/table/1" />} />
+      <Route
+        path="/menu/public/table/:tableNumber"
+        element={<CustomerMenu />}
+      />
       <Route path="/cart" element={<Cart />} />
       <Route path="/status" element={<OrderStatus />} />
       <Route path="/admin" element={<AdminDashboard />} />

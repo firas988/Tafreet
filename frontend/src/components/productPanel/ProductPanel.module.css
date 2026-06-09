@@ -6,8 +6,93 @@
   box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
 }
 
-.panel h2 {
-  margin-top: 0;
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.panelHead h2 {
+  margin: 0;
+}
+
+.count {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.filters {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: white;
+  color: var(--muted);
+}
+
+.searchBox input {
+  flex: 1;
+  border: 0;
+  outline: none;
+  padding: 12px 0;
+  background: transparent;
+  color: var(--text);
+}
+
+.searchBox input::placeholder {
+  color: #b9a796;
+}
+
+.categoryFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filterChip {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--primary-dark);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.filterChip:hover {
+  border-color: rgba(157, 107, 61, 0.35);
+  background: #fffaf3;
+}
+
+.activeChip {
+  background: linear-gradient(135deg, var(--primary), #6b4428);
+  border-color: transparent;
+  color: white;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
 }
 
 .productManageRow {
@@ -47,6 +132,11 @@
   border-radius: 12px;
   background: #fff4e6;
   color: var(--primary-dark);
+}
+
+.rowActions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 620px) {

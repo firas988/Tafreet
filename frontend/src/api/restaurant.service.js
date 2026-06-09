@@ -1,0 +1,64 @@
+import api from "./axios.js";
+
+export const getWorkers = async () => {
+  const res = await api.get("/api/restaurant/workers");
+  return res.data;
+};
+
+export const addWorker = async (data) => {
+  const res = await api.post("/api/restaurant/workers", data);
+  return res.data;
+};
+
+export const updateWorker = async (workerId, data) => {
+  const res = await api.put(`/api/restaurant/workers/${workerId}`, data);
+  return res.data;
+};
+
+export const deleteWorker = async (workerId) => {
+  const res = await api.delete(`/api/restaurant/workers/${workerId}`);
+  return res.data;
+};
+
+export const getCategories = async () => {
+  const res = await api.get("/api/restaurant/categories");
+  return res.data;
+};
+
+export const addCategory = async (formData) => {
+  const res = await api.post("/api/restaurant/add-categories", formData);
+  return res.data;
+};
+
+export const updateCategory = async (categorieId, formData) => {
+  const res = await api.put(
+    `/api/restaurant/categories/${categorieId}`,
+    formData,
+  );
+  return res.data;
+};
+
+export const deleteCategory = async (categorieId) => {
+  const res = await api.delete(`/api/restaurant/categories/${categorieId}`);
+  return res.data;
+};
+
+export const getProducts = async () => {
+  const res = await api.get("/api/restaurant/products");
+  return res.data;
+};
+
+export const addProduct = async (formData) => {
+  const res = await api.post("/api/restaurant/add-products", formData);
+  return res.data;
+};
+
+export const updateProduct = async (productId, formData) => {
+  const res = await api.put(`/api/restaurant/products/${productId}`, formData);
+  return res.data;
+};
+
+export const deleteProduct = async (productId) => {
+  const res = await api.delete(`/api/restaurant/products/${productId}`);
+  return res.data;
+};

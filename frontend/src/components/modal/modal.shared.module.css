@@ -1,0 +1,318 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(157, 107, 61, 0.18),
+      transparent 42%
+    ),
+    radial-gradient(circle at 80% 90%, rgba(44, 28, 18, 0.22), transparent 38%),
+    rgba(28, 18, 12, 0.62);
+  backdrop-filter: blur(10px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  z-index: 100;
+  animation: modalFadeIn 0.22s ease;
+}
+
+.modal {
+  width: min(540px, 100%);
+  max-height: calc(100vh - 48px);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #fffdfa 0%, #fff7ee 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  box-shadow:
+    0 40px 100px rgba(44, 28, 18, 0.28),
+    0 0 0 1px rgba(157, 107, 61, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  animation: modalSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow: hidden;
+}
+
+.modal::before {
+  content: "";
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, #d3a269, var(--primary), #6b4428);
+  flex-shrink: 0;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: start;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid rgba(157, 107, 61, 0.12);
+}
+
+.headerIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff4e4, #e8c9a4);
+  color: var(--primary-dark);
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 10px 24px rgba(157, 107, 61, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.header h2 {
+  margin: 8px 0 4px;
+  font-size: 26px;
+  letter-spacing: -0.6px;
+  line-height: 1.15;
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.closeBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 247, 238, 0.9);
+  border: 1px solid var(--line);
+  color: var(--primary-dark);
+  display: grid;
+  place-items: center;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.closeBtn:hover {
+  background: #ffe8cc;
+  border-color: rgba(157, 107, 61, 0.28);
+  transform: scale(1.05);
+}
+
+.closeBtn:active {
+  transform: scale(0.97);
+}
+
+.body {
+  padding: 22px 28px;
+  display: grid;
+  gap: 18px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(157, 107, 61, 0.45) transparent;
+}
+
+.body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #d3a269, #9d6b3d);
+  border-radius: 999px;
+}
+
+.error {
+  margin: 0;
+  color: #8f2323;
+  background: linear-gradient(135deg, #fff0f0, #ffe7e7);
+  border: 1px solid #f0b4b4;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.field span {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--primary-dark);
+  letter-spacing: 0.01em;
+}
+
+.field input:not([type="checkbox"]):not([type="file"]) {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 13px 15px;
+  outline: none;
+  background: white;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.field input:not([type="checkbox"]):not([type="file"])::placeholder {
+  color: #b9a796;
+  font-size: 14px;
+}
+
+.field input:not([type="checkbox"]):not([type="file"]):focus {
+  border-color: rgba(157, 107, 61, 0.5);
+  box-shadow: 0 0 0 4px rgba(157, 107, 61, 0.12);
+  background: #fffdfa;
+}
+
+.fileDrop {
+  position: relative;
+  display: block;
+  padding: 22px 16px;
+  border-radius: 16px;
+  border: 1.5px dashed rgba(157, 107, 61, 0.35);
+  background: rgba(255, 250, 243, 0.9);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.fileDropContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.fileDrop:hover {
+  border-color: rgba(157, 107, 61, 0.55);
+  background: #fff4e6;
+  color: var(--primary-dark);
+}
+
+.fileDropIconContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.fileDropIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff0dc, #ead2b7);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.fileDropIcon svg {
+  display: block;
+}
+
+.fileInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.fileName {
+  font-size: 13px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.preview {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 32px rgba(64, 42, 22, 0.1);
+}
+
+.footer {
+  padding: 18px 28px 24px;
+  border-top: 1px solid rgba(157, 107, 61, 0.12);
+  background: rgba(255, 250, 243, 0.85);
+  backdrop-filter: blur(6px);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 12px;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 620px) {
+  .overlay {
+    padding: 16px;
+    align-items: end;
+  }
+
+  .modal {
+    max-height: calc(100vh - 32px);
+    border-radius: 24px 24px 20px 20px;
+  }
+
+  .header {
+    padding: 20px 20px 16px;
+    grid-template-columns: auto 1fr;
+  }
+
+  .closeBtn {
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  .body {
+    padding: 18px 20px;
+  }
+
+  .footer {
+    padding: 16px 20px 20px;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}

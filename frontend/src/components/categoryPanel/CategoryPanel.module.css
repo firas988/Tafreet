@@ -6,8 +6,16 @@
   box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
 }
 
-.panel h2 {
-  margin-top: 0;
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.panelHead h2 {
+  margin: 0;
 }
 
 .tableRow {
@@ -17,6 +25,20 @@
   gap: 16px;
   padding: 14px 0;
   border-bottom: 1px solid var(--line);
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.info img {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  object-fit: cover;
 }
 
 .rowActions {
@@ -30,4 +52,15 @@
   border-radius: 12px;
   background: #fff4e6;
   color: var(--primary-dark);
+}
+
+.rowActions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
 }
