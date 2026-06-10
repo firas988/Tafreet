@@ -1,0 +1,138 @@
+.pageTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0;
+  gap: 14px;
+}
+
+.pageTitle h1 {
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+}
+
+.pageTitle p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.panel {
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 28px;
+  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+}
+
+.form {
+  display: grid;
+  gap: 22px;
+  max-width: 640px;
+}
+
+.previewCard {
+  display: grid;
+  gap: 10px;
+}
+
+.previewImage {
+  min-height: 220px;
+  border-radius: 24px;
+  background:
+    linear-gradient(135deg, rgba(32, 20, 13, 0.94), rgba(114, 75, 45, 0.72)),
+    #ead2b7;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.previewPlaceholder {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 700;
+}
+
+.previewHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field span,
+.uploadField span {
+  font-weight: 700;
+}
+
+.field input {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: white;
+}
+
+.uploadField {
+  display: grid;
+  gap: 8px;
+}
+
+.uploadBox {
+  position: relative;
+  border: 1px dashed rgba(157, 107, 61, 0.45);
+  border-radius: 18px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+  background: #fffaf3;
+}
+
+.uploadBox strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.uploadBox p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.uploadBox input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.error {
+  color: #aa3131;
+  background: #ffe7e7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+.success {
+  color: #2f6b3f;
+  background: #e8f7ec;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+.empty {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
+}

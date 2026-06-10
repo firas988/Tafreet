@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import classes from "./ProductCard.module.css";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onAdd }) {
   return (
     <article className={classes.productCard}>
       <img src={product.image} alt={product.name} />
@@ -17,7 +17,12 @@ export default function ProductCard({ product }) {
         </div>
         <div className={classes.priceRow}>
           <b>₪{product.price}</b>
-          <button className={classes.roundBtn} type="button">
+          <button
+            className={classes.roundBtn}
+            type="button"
+            onClick={() => onAdd?.(product)}
+            aria-label={`Add ${product.name} to cart`}
+          >
             +
           </button>
         </div>

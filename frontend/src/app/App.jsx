@@ -4,11 +4,13 @@ import CustomerMenu from "./pages/customerMenu/CustomerMenu.jsx";
 import Cart from "./pages/cart/Cart.jsx";
 import OrderStatus from "./pages/orderStatus/OrderStatus.jsx";
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
+import AdminOrders from "./pages/adminOrders/AdminOrders.jsx";
 import WorkerOrders from "./pages/workerOrders/WorkerOrders.jsx";
 import MenuManagement from "./pages/menuManagement/MenuManagement.jsx";
 import StaffManagement from "./pages/staffManagement/StaffManagement.jsx";
 import TableManagement from "./pages/tableManagement/TableManagement.jsx";
 import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
+import RestaurantSettings from "./pages/restaurantSettings/RestaurantSettings.jsx";
 import NotFound from "./pages/notFound/NotFound.jsx";
 import ProtectedRoute from "../components/protectedRoute/ProtectedRoute.jsx";
 
@@ -28,6 +30,14 @@ export default function App() {
         element={
           <ProtectedRoute role="admin">
             <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/orders"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminOrders />
           </ProtectedRoute>
         }
       />
@@ -60,6 +70,14 @@ export default function App() {
         element={
           <ProtectedRoute role="admin">
             <OrderHistory />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/settings"
+        element={
+          <ProtectedRoute role="admin">
+            <RestaurantSettings />
           </ProtectedRoute>
         }
       />

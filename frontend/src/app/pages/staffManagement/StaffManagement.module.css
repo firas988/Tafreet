@@ -34,6 +34,30 @@
   border-bottom: 1px solid var(--line);
 }
 
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.editBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: #fff4e6;
+  color: var(--primary-dark);
+  display: grid;
+  place-items: center;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.editBtn:hover {
+  background: #ffe8cc;
+  transform: scale(1.04);
+}
+
 .toggle {
   display: flex;
   align-items: center;
@@ -141,5 +165,10 @@
   .staffRow {
     grid-template-columns: 1fr;
     align-items: start;
+  }
+
+  .rowActions {
+    width: 100%;
+    justify-content: space-between;
   }
 }

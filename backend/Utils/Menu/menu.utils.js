@@ -10,7 +10,13 @@ const getPublicMenu = async (tableNumber) => {
     throw new Error("This table is currently unavailable");
   }
 
-  const restaurant = await getRestaurant();
+  const restaurant =
+    (await getRestaurant(false)) || {
+      restaurant_id: null,
+      restaurant_name: "Menu",
+      image_path: "",
+    };
+
   const [categories, products] = await Promise.all([
     restaurantCategories(),
     restaurantProducts(),

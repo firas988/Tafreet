@@ -108,14 +108,21 @@ const updateRestaurantWorker = async (
   workerId,
   first_name,
   last_name,
+  email,
   is_active,
+  password = null,
 ) => {
   try {
     if (!first_name?.trim()) {
       throw new Error("First name is required");
     }
 
+    if (!email?.trim()) {
+      throw new Error("Email is required");
+    }
+
     const activeValue = Number(is_active) === 1 ? 1 : 0;
+    const normalizedEmail = email.trim().toLowerCase();
 
     const [existing] = await db
       .promise()
@@ -127,11 +134,44 @@ const updateRestaurantWorker = async (
       throw new Error("Worker not found");
     }
 
+    const [duplicateEmail] = await db
+      .promise()
+      .query(
+        "SELECT user_id FROM user WHERE email = ? AND user_id != ?",
+        [normalizedEmail, workerId],
+      );
+
+    if (duplicateEmail.length > 0) {
+      throw new Error("This email is already in use");
+    }
+
+    const updates = [
+      "first_name = ?",
+      "last_name = ?",
+      "email = ?",
+      "is_active = ?",
+    ];
+    const params = [
+      first_name.trim(),
+      last_name?.trim() || "",
+      normalizedEmail,
+      activeValue,
+    ];
+
+    if (password) {
+      validateWorkerPassword(password);
+      const hashPassword = await bcrypt.hash(password, 10);
+      updates.push("password = ?");
+      params.push(hashPassword);
+    }
+
+    params.push(workerId);
+
     const [result] = await db
       .promise()
       .query(
-        "UPDATE user SET first_name = ?, last_name = ?, is_active = ? WHERE user_id = ? AND role = 'worker'",
-        [first_name.trim(), last_name?.trim() || "", activeValue, workerId],
+        `UPDATE user SET ${updates.join(", ")} WHERE user_id = ? AND role = 'worker'`,
+        params,
       );
 
     if (result.affectedRows === 0) {

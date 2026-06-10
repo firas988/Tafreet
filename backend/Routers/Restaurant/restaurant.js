@@ -8,7 +8,10 @@ const {
   removeImageFromRestaurantFolderService,
   removeImageFromRestaurantProfileService,
 } = require("../../Services/image/imageStorage.service");
-const { restaurantData } = require("../../Utils/Restaurant/restaurantData.utils");
+const {
+  getRestaurant,
+  restaurantData,
+} = require("../../Utils/Restaurant/restaurantData.utils");
 const {
   restaurantCategories,
   addRestaurantCategory,
@@ -65,6 +68,23 @@ router.get("/data", async (req, res) => {
   try {
     const data = await restaurantData();
     return res.status(200).json({ success: true, ...data });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.get("/profile", async (req, res) => {
+  try {
+    const restaurant = await getRestaurant(false);
+
+    return res.status(200).json({
+      success: true,
+      restaurant: restaurant || {
+        restaurant_id: null,
+        restaurant_name: "",
+        image_path: "",
+      },
+    });
   } catch (err) {
     return res.status(200).json({ success: false, message: err.message });
   }
@@ -324,12 +344,14 @@ router.post("/workers", async (req, res) => {
 
 router.put("/workers/:worker_id", async (req, res) => {
   try {
-    const { first_name, last_name, is_active } = req.body;
+    const { first_name, last_name, email, is_active, password } = req.body;
     const result = await updateRestaurantWorker(
       req.params.worker_id,
       first_name,
       last_name,
+      email,
       is_active,
+      password || null,
     );
     return res.status(200).json({ ...result });
   } catch (err) {

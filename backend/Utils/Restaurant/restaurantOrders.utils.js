@@ -37,6 +37,8 @@ const formatOrder = (order, products = []) => {
     status: order.status,
     created_at: order.created_at,
     customer_name: order.user_name,
+    payment_code: order.payment_code || null,
+    is_cash: Number(order.is_cash) === 1 ? 1 : 0,
     items,
     total,
     items_count,
@@ -49,10 +51,14 @@ const restaurantOrders = async () => {
       SELECT
         o.order_id,
         o.user_name,
-        o.table_number,
+        t.table_number,
         o.status,
-        o.created_at
+        o.created_at,
+        p.payment_code,
+        p.is_cash
       FROM orders o
+      JOIN tables t ON o.table_id = t.table_id
+      LEFT JOIN payments p ON p.order_id = o.order_id
       ORDER BY o.created_at DESC
     `;
     const [orders] = await db.promise().query(ordersQuery);
@@ -69,7 +75,7 @@ const restaurantOrders = async () => {
         p.product_name,
         p.product_price,
         p.image_path,
-        COUNT(*) AS quantity
+        SUM(ocp.quantity) AS quantity
       FROM order_contains_products ocp
       JOIN products p ON ocp.product_id = p.product_id
       WHERE ocp.order_id IN (?)

@@ -1,16 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
 import { login } from "../../../api/auth.service.js";
+import { useData } from "../../../context/DataContext.jsx";
 import classes from "./Login.module.css";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { user, setUser } = useData();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const role = user.role?.toLowerCase();
+    if (role === "admin") {
+      navigate("/admin", { replace: true });
+      return;
+    }
+    if (role === "worker") {
+      navigate("/worker", { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,6 +39,8 @@ export default function Login() {
         setError(result.message || "Login failed");
         return;
       }
+
+      setUser(result.user);
 
       const role = result.user?.role?.toLowerCase();
 

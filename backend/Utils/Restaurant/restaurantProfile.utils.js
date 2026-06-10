@@ -14,7 +14,24 @@ const updateRestaurantProfile = async (restaurant_name, imageName = null) => {
       );
 
     if (existing.length === 0) {
-      throw new Error("Restaurant not found");
+      const imagePath = imageName || "";
+      const [insertResult] = await db
+        .promise()
+        .query(
+          "INSERT INTO restaurant (restaurant_name, restaurant_image_path) VALUES (?, ?)",
+          [restaurant_name.trim(), imagePath],
+        );
+
+      return {
+        success: true,
+        message: "Restaurant profile created successfully",
+        restaurant: {
+          restaurant_id: insertResult.insertId,
+          restaurant_name: restaurant_name.trim(),
+          image_path: imagePath,
+        },
+        previousImagePath: null,
+      };
     }
 
     const previousImagePath = existing[0].restaurant_image_path;

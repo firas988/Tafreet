@@ -58,6 +58,11 @@
 
 .logout {
   margin-top: auto;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
 }
 
 @media (max-width: 1000px) {

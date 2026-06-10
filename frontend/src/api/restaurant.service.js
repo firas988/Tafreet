@@ -1,5 +1,15 @@
 import api from "./axios.js";
 
+export const getRestaurantProfile = async () => {
+  const res = await api.get("/api/restaurant/profile");
+  return res.data;
+};
+
+export const updateRestaurantProfile = async (formData) => {
+  const res = await api.put("/api/restaurant/profile", formData);
+  return res.data;
+};
+
 export const getWorkers = async () => {
   const res = await api.get("/api/restaurant/workers");
   return res.data;

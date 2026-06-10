@@ -3,18 +3,24 @@ import { Link, useParams } from "react-router-dom";
 import { Search, ShoppingBag } from "lucide-react";
 import ProductCard from "../../../components/productCard/ProductCard.jsx";
 import { getPublicMenu } from "../../../api/menu.service.js";
+import { useCart } from "../../../context/CartContext.jsx";
 import { getUploadUrl } from "../../../utils/imageUrl.js";
 import classes from "./CustomerMenu.module.css";
 
 export default function CustomerMenu() {
   const { tableNumber = "1" } = useParams();
-  const [restaurant, setRestaurant] = useState({ name: "", image_path: "" });
+  const { cartCount, initTable, addToCart } = useCart();
+  const [restaurant, setRestaurant] = useState({ restaurant_name: "", image_path: "" });
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    initTable(Number(tableNumber));
+  }, [tableNumber, initTable]);
 
   useEffect(() => {
     const loadMenu = async () => {
@@ -43,9 +49,10 @@ export default function CustomerMenu() {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      const categoryIds = (product.categorie_ids || []).map(Number);
       const matchesCategory =
-        !activeCategory ||
-        product.categorie_ids?.includes(activeCategory);
+        activeCategory === null ||
+        categoryIds.includes(Number(activeCategory));
 
       const query = search.trim().toLowerCase();
       const matchesSearch =
@@ -65,27 +72,40 @@ export default function CustomerMenu() {
     image: getUploadUrl("products", product.image_path),
   }));
 
+  const heroImageUrl = getUploadUrl("profile", restaurant.image_path);
+
   return (
     <div className={classes.customerPage}>
       <header
-        className={classes.hero}
-        style={
-          restaurant.image_path
-            ? {
-                backgroundImage: `linear-gradient(135deg, rgba(32, 20, 13, 0.94), rgba(114, 75, 45, 0.72)), url(${getUploadUrl("profile", restaurant.image_path)})`,
-              }
-            : undefined
+        className={
+          heroImageUrl
+            ? `${classes.hero} ${classes.heroWithImage}`
+            : classes.hero
         }
       >
-        <div>
-          <span className="pill">Table {tableNumber}</span>
-          <h1>{restaurant.restaurant_name || "Menu"}</h1>
-          <p>Order directly from your table</p>
+        {heroImageUrl && (
+          <img
+            className={classes.heroImage}
+            src={heroImageUrl}
+            alt=""
+            aria-hidden="true"
+          />
+        )}
+        <div className={classes.heroOverlay} aria-hidden="true" />
+        <div className={classes.heroInner}>
+          <div>
+            <span className="pill">Table {tableNumber}</span>
+            <h1>{restaurant.restaurant_name || "Menu"}</h1>
+            <p>Order directly from your table</p>
+          </div>
+          <Link
+            to={`/cart?table=${tableNumber}`}
+            className={classes.cartBubble}
+          >
+            <ShoppingBag size={22} />
+            <b>{cartCount}</b>
+          </Link>
         </div>
-        <Link to="/cart" className={classes.cartBubble}>
-          <ShoppingBag size={22} />
-          <b>0</b>
-        </Link>
       </header>
 
       <div className={classes.searchBox}>
@@ -118,7 +138,7 @@ export default function CustomerMenu() {
               <button
                 key={cat.categorie_id}
                 className={
-                  activeCategory === cat.categorie_id
+                  Number(activeCategory) === Number(cat.categorie_id)
                     ? `${classes.categoryChip} ${classes.activeChip}`
                     : classes.categoryChip
                 }
@@ -142,7 +162,11 @@ export default function CustomerMenu() {
           ) : (
             <section className={classes.productGrid}>
               {mappedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAdd={addToCart}
+                />
               ))}
             </section>
           )}

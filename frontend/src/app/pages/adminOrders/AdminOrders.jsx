@@ -1,21 +1,18 @@
 import AdminLayout from "../../../components/adminLayout/AdminLayout.jsx";
 import OrderCard from "../../../components/orderCard/OrderCard.jsx";
-import classes from "./WorkerOrders.module.css";
+import classes from "../workerOrders/WorkerOrders.module.css";
 
 const columns = ["New", "Preparing", "Ready"];
 
-export default function WorkerOrders() {
+export default function AdminOrders() {
   const orders = [];
+
   return (
-    <AdminLayout
-      title="Worker Panel"
-      subtitle="Kitchen live queue"
-      variant="worker"
-    >
+    <AdminLayout title="Admin Panel" subtitle="Live orders">
       <div className={classes.pageTitle}>
         <div>
-          <h1>Kitchen Orders</h1>
-          <p>Accept, prepare and complete customer orders.</p>
+          <h1>Live Orders</h1>
+          <p>Monitor and manage incoming customer orders.</p>
         </div>
       </div>
 

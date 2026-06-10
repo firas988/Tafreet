@@ -65,7 +65,8 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `order_contains_products` (
   `order_id` int(254) UNSIGNED NOT NULL,
-  `product_id` int(254) UNSIGNED NOT NULL
+  `product_id` int(254) UNSIGNED NOT NULL,
+  `quantity` int(254) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -77,6 +78,8 @@ CREATE TABLE `order_contains_products` (
 CREATE TABLE `payments` (
   `payment_id` int(254) UNSIGNED NOT NULL,
   `order_id` int(254) UNSIGNED NOT NULL,
+  `payment_code` varchar(64) DEFAULT NULL,
+  `is_cash` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

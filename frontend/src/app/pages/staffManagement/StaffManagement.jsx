@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, ShieldCheck } from "lucide-react";
+import { Edit, Plus, ShieldCheck } from "lucide-react";
 import AdminLayout from "../../../components/adminLayout/AdminLayout.jsx";
 import AddWorkerForm from "../../../components/addWorkerForm/AddWorkerForm.jsx";
 import {
@@ -11,7 +11,7 @@ import classes from "./StaffManagement.module.css";
 
 export default function StaffManagement() {
   const [staff, setStaff] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  const [workerForm, setWorkerForm] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [pageError, setPageError] = useState("");
@@ -40,35 +40,33 @@ export default function StaffManagement() {
     loadWorkers();
   }, []);
 
-  const handleAddWorker = async (data) => {
+  const closeForm = () => {
+    setWorkerForm(null);
+    setFormError("");
+  };
+
+  const handleSaveWorker = async (data) => {
     setSubmitting(true);
     setFormError("");
 
     try {
-      const result = await addWorker(data);
+      const result =
+        workerForm === "new"
+          ? await addWorker(data)
+          : await updateWorker(workerForm.user_id, data);
+
       if (!result.success) {
-        setFormError(result.message || "Failed to add worker");
+        setFormError(result.message || "Failed to save worker");
         return;
       }
 
-      setShowForm(false);
-      setFormError("");
+      closeForm();
       await loadWorkers();
     } catch (err) {
-      setFormError(err.response?.data?.message || "Could not add worker");
+      setFormError(err.response?.data?.message || "Could not save worker");
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const openForm = () => {
-    setFormError("");
-    setShowForm(true);
-  };
-
-  const closeForm = () => {
-    setFormError("");
-    setShowForm(false);
   };
 
   const getFullName = (member) =>
@@ -83,6 +81,7 @@ export default function StaffManagement() {
       const result = await updateWorker(member.user_id, {
         first_name: member.first_name,
         last_name: member.last_name,
+        email: member.email,
         is_active: newActive,
       });
 
@@ -110,12 +109,12 @@ export default function StaffManagement() {
       <div className={classes.pageTitle}>
         <div>
           <h1>Staff Management</h1>
-          <p>Create worker accounts and control active status.</p>
+          <p>Create, edit, and manage worker accounts.</p>
         </div>
         <button
           className="btn"
           type="button"
-          onClick={openForm}
+          onClick={() => setWorkerForm("new")}
         >
           <Plus size={18} /> Add Worker
         </button>
@@ -142,31 +141,42 @@ export default function StaffManagement() {
             <span className={classes.role}>
               <ShieldCheck size={15} /> {member.role}
             </span>
-            <label className={classes.toggle}>
-              <input
-                type="checkbox"
-                checked={Boolean(member.is_active)}
-                disabled={updatingId === member.user_id}
-                onChange={() => handleToggleActive(member)}
-              />
-              <span className={classes.toggleTrack}>
-                <span className={classes.toggleThumb} />
-              </span>
-              <span className={classes.toggleText}>
-                {updatingId === member.user_id
-                  ? "Updating..."
-                  : member.is_active
-                    ? "Active"
-                    : "Disabled"}
-              </span>
-            </label>
+            <div className={classes.rowActions}>
+              <button
+                className={classes.editBtn}
+                type="button"
+                onClick={() => setWorkerForm(member)}
+                aria-label={`Edit ${getFullName(member)}`}
+              >
+                <Edit size={16} />
+              </button>
+              <label className={classes.toggle}>
+                <input
+                  type="checkbox"
+                  checked={Boolean(member.is_active)}
+                  disabled={updatingId === member.user_id}
+                  onChange={() => handleToggleActive(member)}
+                />
+                <span className={classes.toggleTrack}>
+                  <span className={classes.toggleThumb} />
+                </span>
+                <span className={classes.toggleText}>
+                  {updatingId === member.user_id
+                    ? "Updating..."
+                    : member.is_active
+                      ? "Active"
+                      : "Disabled"}
+                </span>
+              </label>
+            </div>
           </div>
         ))}
       </section>
 
-      {showForm && (
+      {workerForm && (
         <AddWorkerForm
-          onSubmit={handleAddWorker}
+          worker={workerForm === "new" ? null : workerForm}
+          onSubmit={handleSaveWorker}
           onClose={closeForm}
           loading={submitting}
           error={formError}

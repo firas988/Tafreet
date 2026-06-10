@@ -1,37 +1,27 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkLogin } from "../../api/auth.service.js";
-import { isAuthError } from "../../utils/auth.js";
+import { useData } from "../../context/DataContext.jsx";
 
 export default function ProtectedRoute({ children, role = null }) {
   const navigate = useNavigate();
+  const { user } = useData();
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
-    const verify = async () => {
-      try {
-        const result = await checkLogin();
+    if (!user) {
+      navigate("/login", { replace: true });
+      return;
+    }
 
-        if (!result.success || isAuthError(result.message)) {
-          navigate("/login", { replace: true });
-          return;
-        }
+    const userRole = user.role?.toLowerCase();
 
-        const userRole = result.user?.role?.toLowerCase();
+    if (role && userRole !== role) {
+      navigate(userRole === "admin" ? "/admin" : "/worker", { replace: true });
+      return;
+    }
 
-        if (role && userRole !== role) {
-          navigate("/login", { replace: true });
-          return;
-        }
-
-        setAllowed(true);
-      } catch {
-        navigate("/login", { replace: true });
-      }
-    };
-
-    verify();
-  }, [navigate, role]);
+    setAllowed(true);
+  }, [navigate, role, user]);
 
   if (!allowed) {
     return null;
