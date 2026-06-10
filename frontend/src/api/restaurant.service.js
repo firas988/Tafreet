@@ -97,3 +97,15 @@ export const getTableQrCode = async (tableId) => {
   const res = await api.get(`/api/restaurant/tables/${tableId}/qrcode`);
   return res.data;
 };
+
+export const getRestaurantOrders = async () => {
+  const res = await api.get("/api/restaurant/orders");
+  return res.data;
+};
+
+export const updateRestaurantOrderStatus = async (orderId, status) => {
+  const res = await api.put(`/api/restaurant/orders/${orderId}/status`, {
+    status,
+  });
+  return res.data;
+};

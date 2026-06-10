@@ -40,3 +40,27 @@ export function formatOrderTime(createdAt) {
     minute: "2-digit",
   });
 }
+
+export function isOrderToday(createdAt) {
+  if (!createdAt) return false;
+  return (
+    new Date(createdAt).toDateString() === new Date().toDateString()
+  );
+}
+
+export function formatOrderDateTime(createdAt) {
+  if (!createdAt) return "";
+  return new Date(createdAt).toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+export const STATUS_BADGE_CLASS = {
+  submitted: "new",
+  processing: "preparing",
+  completed: "ready",
+  paid: "completed",
+};

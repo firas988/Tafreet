@@ -26,7 +26,9 @@ const {
 } = require("../../Utils/Restaurant/restaurantProducts.utils");
 const {
   restaurantOrders,
+  updateRestaurantOrderStatus,
 } = require("../../Utils/Restaurant/restaurantOrders.utils");
+const { emitOrderUpdated } = require("../../Socket/emitters");
 const {
   restaurantWorkers,
   addRestaurantWorker,
@@ -312,6 +314,24 @@ router.get("/orders", async (req, res) => {
   try {
     const orders = await restaurantOrders();
     return res.status(200).json({ success: true, orders });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.put("/orders/:order_id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const result = await updateRestaurantOrderStatus(
+      req.params.order_id,
+      status,
+    );
+
+    if (result.order) {
+      emitOrderUpdated(result.order);
+    }
+
+    return res.status(200).json({ ...result });
   } catch (err) {
     return res.status(200).json({ success: false, message: err.message });
   }

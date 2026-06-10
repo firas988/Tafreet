@@ -1,0 +1,156 @@
+.detailModal {
+  width: min(620px, 100%);
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metaCard {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+}
+
+.metaCard span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metaCard strong {
+  font-size: 15px;
+}
+
+.cashTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.paymentCode {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f3f8f4;
+  border: 1px solid rgba(47, 107, 63, 0.14);
+}
+
+.paymentCode span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.itemsSection h3 {
+  margin: 0 0 12px;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+}
+
+.itemsList {
+  display: grid;
+  gap: 10px;
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.itemRow img,
+.itemFallback {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.itemFallback {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #fff4e6, #ead2b7);
+  color: var(--primary-dark);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.itemInfo {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.itemInfo strong {
+  font-size: 15px;
+}
+
+.itemInfo span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.itemTotal {
+  color: var(--primary-dark);
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.emptyItems {
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  border-radius: 16px;
+  background: #fffaf4;
+  border: 1px dashed rgba(157, 107, 61, 0.2);
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: #fff4e6;
+  border: 1px solid rgba(157, 107, 61, 0.16);
+  font-weight: 700;
+}
+
+.totalRow b {
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 620px) {
+  .metaGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .itemRow {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .itemTotal {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

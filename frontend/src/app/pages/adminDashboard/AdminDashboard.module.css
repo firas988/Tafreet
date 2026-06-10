@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 18px 0;
+  margin: 18px 0 22px;
   gap: 14px;
 }
 
@@ -16,51 +16,173 @@
   color: var(--muted);
 }
 
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: var(--primary-dark);
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.viewAllLink:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(44, 28, 18, 0.2);
+}
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  margin-bottom: 18px;
 }
 
 .statCard {
-  padding: 22px;
+  padding: 20px 22px;
   display: grid;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 28px;
-  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.08);
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  box-shadow: 0 14px 36px rgba(64, 42, 22, 0.07);
+  transition: transform 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
 }
 
 .statCard svg {
   color: var(--primary);
 }
 
+.statOrders svg {
+  color: #315faa;
+}
+
+.statRevenue svg {
+  color: #227a45;
+}
+
 .statCard span {
   color: var(--muted);
   font-weight: 700;
+  font-size: 13px;
 }
 
 .statCard b {
-  font-size: 32px;
+  font-size: 30px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.statCard small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.statLink {
+  color: var(--primary-dark);
+  font-size: 12px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.statLink:hover {
+  text-decoration: underline;
+}
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pipelineStep {
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 4px;
+}
+
+.pipelineStep span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pipelineStep b {
+  font-size: 22px;
+  color: var(--primary-dark);
+}
+
+.pipelineStep svg {
+  color: var(--primary);
 }
 
 .sectionHead {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 18px 0;
+  margin: 0 0 16px;
   gap: 14px;
 }
 
 .sectionHead h2 {
-  margin: 0 0 6px;
-  letter-spacing: -1px;
+  margin: 0 0 4px;
+  letter-spacing: -0.5px;
 }
 
 .sectionHead p {
   margin: 0;
   color: var(--muted);
+  font-size: 14px;
+}
+
+.liveDot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: #e7f9ee;
+  color: #227a45;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.liveDot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #227a45;
+  animation: pulse 1.6s ease infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
 }
 
 .ordersGrid {
@@ -69,10 +191,32 @@
   gap: 16px;
 }
 
-@media (max-width: 1000px) {
+.empty,
+.emptyOrders {
+  margin: 0 0 18px;
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-weight: 600;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px dashed rgba(157, 107, 61, 0.22);
+}
+
+.error {
+  color: #9b2c2c;
+  background: #ffe7e7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
   .statsGrid,
+  .pipeline,
   .ordersGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -81,5 +225,16 @@
   .sectionHead {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .statsGrid,
+  .pipeline,
+  .ordersGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .viewAllLink {
+    width: 100%;
+    justify-content: center;
   }
 }
