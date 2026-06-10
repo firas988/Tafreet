@@ -7,12 +7,15 @@ import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
 import WorkerOrders from "./pages/workerOrders/WorkerOrders.jsx";
 import MenuManagement from "./pages/menuManagement/MenuManagement.jsx";
 import StaffManagement from "./pages/staffManagement/StaffManagement.jsx";
+import TableManagement from "./pages/tableManagement/TableManagement.jsx";
 import OrderHistory from "./pages/orderHistory/OrderHistory.jsx";
 import NotFound from "./pages/notFound/NotFound.jsx";
+import ProtectedRoute from "../components/protectedRoute/ProtectedRoute.jsx";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/menu/public/table/:tableNumber"
@@ -20,11 +23,54 @@ export default function App() {
       />
       <Route path="/cart" element={<Cart />} />
       <Route path="/status" element={<OrderStatus />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/admin/menu" element={<MenuManagement />} />
-      <Route path="/admin/staff" element={<StaffManagement />} />
-      <Route path="/admin/history" element={<OrderHistory />} />
-      <Route path="/worker" element={<WorkerOrders />} />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute role="admin">
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/menu"
+        element={
+          <ProtectedRoute role="admin">
+            <MenuManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/staff"
+        element={
+          <ProtectedRoute role="admin">
+            <StaffManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/tables"
+        element={
+          <ProtectedRoute role="admin">
+            <TableManagement />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/history"
+        element={
+          <ProtectedRoute role="admin">
+            <OrderHistory />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/worker"
+        element={
+          <ProtectedRoute role="worker">
+            <WorkerOrders />
+          </ProtectedRoute>
+        }
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

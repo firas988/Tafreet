@@ -62,3 +62,28 @@ export const deleteProduct = async (productId) => {
   const res = await api.delete(`/api/restaurant/products/${productId}`);
   return res.data;
 };
+
+export const getTables = async () => {
+  const res = await api.get("/api/restaurant/tables");
+  return res.data;
+};
+
+export const addTable = async (data) => {
+  const res = await api.post("/api/restaurant/tables", data);
+  return res.data;
+};
+
+export const updateTable = async (tableId, data) => {
+  const res = await api.put(`/api/restaurant/tables/${tableId}`, data);
+  return res.data;
+};
+
+export const deleteTable = async (tableId) => {
+  const res = await api.delete(`/api/restaurant/tables/${tableId}`);
+  return res.data;
+};
+
+export const getTableQrCode = async (tableId) => {
+  const res = await api.get(`/api/restaurant/tables/${tableId}/qrcode`);
+  return res.data;
+};

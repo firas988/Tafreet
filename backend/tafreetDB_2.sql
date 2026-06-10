@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2026 at 08:09 PM
+-- Generation Time: Jun 10, 2026 at 09:03 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,14 @@ CREATE TABLE `categories` (
   `image_path` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`categorie_id`, `categorie_name`, `image_path`) VALUES
+(1, 'ghgh', '1781034570482_Screenshot_2024-02-19_092619.png'),
+(2, 'dsf', '1781034429146_nvidia-chat_.png');
+
 -- --------------------------------------------------------
 
 --
@@ -44,7 +52,7 @@ CREATE TABLE `categories` (
 CREATE TABLE `orders` (
   `order_id` int(254) UNSIGNED NOT NULL,
   `user_name` varchar(150) NOT NULL,
-  `table_number` int(100) NOT NULL,
+  `table_id` int(254) UNSIGNED NOT NULL,
   `status` enum('submitted','processing','completed','paid') NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -86,6 +94,13 @@ CREATE TABLE `products` (
   `image_path` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `description`, `image_path`) VALUES
+(2, 'testf', 14.00, 'd', '1781034579383_Screenshot_2024-03-10_111426.png');
+
 -- --------------------------------------------------------
 
 --
@@ -97,6 +112,13 @@ CREATE TABLE `product_belongs_to_category` (
   `product_id` int(254) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `product_belongs_to_category`
+--
+
+INSERT INTO `product_belongs_to_category` (`categorie_id`, `product_id`) VALUES
+(1, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -107,6 +129,18 @@ CREATE TABLE `restaurant` (
   `restaurant_id` int(254) UNSIGNED NOT NULL,
   `restaurant_name` varchar(150) NOT NULL,
   `restaurant_image_path` varchar(254) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tables`
+--
+
+CREATE TABLE `tables` (
+  `table_id` int(254) UNSIGNED NOT NULL,
+  `table_number` int(254) NOT NULL,
+  `is_active` tinyint(3) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -127,6 +161,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `first_name`, `last_name`, `email`, `password`, `role`, `is_active`, `created_at`) VALUES
+(1, 'test', 'tt', 'test@test.com', '$2a$12$K2JStRJGGO7SedCs4vKDZeq5R6ogpJ3c.5k0cRmJ8mW2/tzB0nrEO', 'admin', 1, '2026-06-09 19:07:18'),
+(2, 'testw', 'testwl', 'test@gogo.res', '$2b$10$/XOQIvP1k5BUvTZcfgIGpenW5qG4ewtGjwiGeMsRxmMfa1dvQgmJC', 'worker', 1, '2026-06-09 19:23:47');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -140,7 +182,8 @@ ALTER TABLE `categories`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_id`);
+  ADD PRIMARY KEY (`order_id`),
+  ADD KEY `table_id` (`table_id`);
 
 --
 -- Indexes for table `order_contains_products`
@@ -176,6 +219,13 @@ ALTER TABLE `restaurant`
   ADD PRIMARY KEY (`restaurant_id`);
 
 --
+-- Indexes for table `tables`
+--
+ALTER TABLE `tables`
+  ADD PRIMARY KEY (`table_id`),
+  ADD UNIQUE KEY `table_number` (`table_number`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -189,7 +239,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categorie_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `categorie_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -207,7 +257,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `restaurant`
@@ -216,14 +266,26 @@ ALTER TABLE `restaurant`
   MODIFY `restaurant_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tables`
+--
+ALTER TABLE `tables`
+  MODIFY `table_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(254) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`table_id`) REFERENCES `tables` (`table_id`);
 
 --
 -- Constraints for table `order_contains_products`

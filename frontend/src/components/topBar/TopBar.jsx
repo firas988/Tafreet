@@ -5,6 +5,7 @@ import {
   ListOrdered,
   LogOut,
   Menu,
+  Table2,
   Users,
 } from "lucide-react";
 import classes from "./TopBar.module.css";
@@ -19,6 +20,7 @@ export default function TopBar({
     { path: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { path: "/worker", label: "Orders", icon: ListOrdered },
     { path: "/admin/menu", label: "Menu", icon: Menu },
+    { path: "/admin/tables", label: "Tables", icon: Table2 },
     { path: "/admin/staff", label: "Staff", icon: Users },
   ];
 
@@ -41,7 +43,11 @@ export default function TopBar({
 
           return (
             <Link
-              className={active ? `${classes.navItem} ${classes.active}` : classes.navItem}
+              className={
+                active
+                  ? `${classes.navItem} ${classes.active}`
+                  : classes.navItem
+              }
               to={link.path}
               key={link.path}
             >

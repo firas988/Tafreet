@@ -33,6 +33,14 @@ const {
 const {
   updateRestaurantProfile,
 } = require("../../Utils/Restaurant/restaurantProfile.utils");
+const {
+  restaurantTables,
+  getRestaurantTableById,
+  addRestaurantTable,
+  updateRestaurantTable,
+  deleteRestaurantTable,
+} = require("../../Utils/Restaurant/restaurantTables.utils");
+const { generateQRCode } = require("../../Services/QRCode/QRCode.service");
 
 const parseCategorieIds = (categorie_ids) => {
   if (!categorie_ids) return [];
@@ -333,6 +341,63 @@ router.delete("/workers/:worker_id", async (req, res) => {
   try {
     const result = await deleteRestaurantWorker(req.params.worker_id);
     return res.status(200).json({ ...result });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.get("/tables", async (req, res) => {
+  try {
+    const tables = await restaurantTables();
+    return res.status(200).json({ success: true, tables });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.post("/tables", async (req, res) => {
+  try {
+    const { table_number, is_active } = req.body;
+    const result = await addRestaurantTable(table_number, is_active);
+    return res.status(201).json({ ...result });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.put("/tables/:table_id", async (req, res) => {
+  try {
+    const { table_number, is_active } = req.body;
+    const result = await updateRestaurantTable(
+      req.params.table_id,
+      table_number,
+      is_active,
+    );
+    return res.status(200).json({ ...result });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.delete("/tables/:table_id", async (req, res) => {
+  try {
+    const result = await deleteRestaurantTable(req.params.table_id);
+    return res.status(200).json({ ...result });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.get("/tables/:table_id/qrcode", async (req, res) => {
+  try {
+    const table = await getRestaurantTableById(req.params.table_id);
+    const result = await generateQRCode(table.table_number);
+
+    return res.status(200).json({
+      ...result,
+      table_id: table.table_id,
+      table_number: table.table_number,
+    });
   } catch (err) {
     return res.status(200).json({ success: false, message: err.message });
   }

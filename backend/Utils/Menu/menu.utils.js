@@ -1,12 +1,13 @@
 const { getRestaurant } = require("../Restaurant/restaurantData.utils");
 const { restaurantCategories } = require("../Restaurant/restaurantCategories.utils");
 const { restaurantProducts } = require("../Restaurant/restaurantProducts.utils");
+const { getTableByNumber } = require("../Restaurant/restaurantTables.utils");
 
 const getPublicMenu = async (tableNumber) => {
-  const parsedTableNumber = Number(tableNumber);
+  const table = await getTableByNumber(tableNumber);
 
-  if (!Number.isInteger(parsedTableNumber) || parsedTableNumber <= 0) {
-    throw new Error("Invalid table number");
+  if (!table.is_active) {
+    throw new Error("This table is currently unavailable");
   }
 
   const restaurant = await getRestaurant();
@@ -19,7 +20,8 @@ const getPublicMenu = async (tableNumber) => {
     restaurant,
     categories,
     products,
-    table_number: parsedTableNumber,
+    table_id: table.table_id,
+    table_number: table.table_number,
   };
 };
 
