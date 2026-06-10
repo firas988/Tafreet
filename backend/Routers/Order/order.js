@@ -5,6 +5,11 @@ const {
   addProductsToOrder,
   recordPayment,
 } = require("../../Utils/Order/order.utils");
+const {
+  getOrderById,
+  getActiveOrdersByTableNumber,
+} = require("../../Utils/Restaurant/restaurantOrders.utils");
+const { emitOrderCreated } = require("../../Socket/emitters");
 
 router.post("/createOrder", async (req, res) => {
   try {
@@ -20,10 +25,40 @@ router.post("/createOrder", async (req, res) => {
       payment_code,
     });
 
+    const fullOrder = await getOrderById(order.order_id);
+    emitOrderCreated(fullOrder);
+
     return res.status(200).json({
       ...order,
       payment_code: payment.payment_code,
       is_cash: payment.is_cash,
+      order: fullOrder,
+    });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.get("/table/:tableNumber/active", async (req, res) => {
+  try {
+    const orders = await getActiveOrdersByTableNumber(req.params.tableNumber);
+
+    return res.status(200).json({
+      success: true,
+      orders,
+    });
+  } catch (err) {
+    return res.status(200).json({ success: false, message: err.message });
+  }
+});
+
+router.get("/:orderId", async (req, res) => {
+  try {
+    const order = await getOrderById(req.params.orderId);
+
+    return res.status(200).json({
+      success: true,
+      order,
     });
   } catch (err) {
     return res.status(200).json({ success: false, message: err.message });

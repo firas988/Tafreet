@@ -24,6 +24,7 @@ export default function App() {
         element={<CustomerMenu />}
       />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/status/:orderId" element={<OrderStatus />} />
       <Route path="/status" element={<OrderStatus />} />
       <Route
         path="/admin"

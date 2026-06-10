@@ -1,10 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Search, ShoppingBag } from "lucide-react";
+import { ClipboardList, Search, ShoppingBag } from "lucide-react";
 import ProductCard from "../../../components/productCard/ProductCard.jsx";
 import { getPublicMenu } from "../../../api/menu.service.js";
+import { getActiveTableOrders } from "../../../api/order.service.js";
 import { useCart } from "../../../context/CartContext.jsx";
+import {
+  joinTableRoom,
+  onOrderCreated,
+  onOrderUpdated,
+} from "../../../socket/socket.js";
 import { getUploadUrl } from "../../../utils/imageUrl.js";
+import { getStatusLabel } from "../../../utils/orderStatus.js";
+import { upsertActiveOrder } from "../../../utils/activeOrders.js";
+import { saveTableOrders } from "../../../utils/tableOrderStorage.js";
 import classes from "./CustomerMenu.module.css";
 
 export default function CustomerMenu() {
@@ -17,6 +26,7 @@ export default function CustomerMenu() {
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [activeOrders, setActiveOrders] = useState([]);
 
   useEffect(() => {
     initTable(Number(tableNumber));
@@ -45,6 +55,45 @@ export default function CustomerMenu() {
     };
 
     loadMenu();
+  }, [tableNumber]);
+
+  useEffect(() => {
+    const loadActiveOrders = async () => {
+      try {
+        const result = await getActiveTableOrders(tableNumber);
+        if (result.success) {
+          const orders = result.orders || [];
+          setActiveOrders(orders);
+          saveTableOrders(tableNumber, orders);
+          return;
+        }
+
+        setActiveOrders([]);
+      } catch {
+        setActiveOrders([]);
+      }
+    };
+
+    loadActiveOrders();
+    joinTableRoom(tableNumber);
+
+    const handleOrderEvent = (order) => {
+      if (Number(order.table_number) !== Number(tableNumber)) return;
+
+      setActiveOrders((prev) => {
+        const next = upsertActiveOrder(prev, order);
+        saveTableOrders(tableNumber, next);
+        return next;
+      });
+    };
+
+    const unsubscribeCreated = onOrderCreated(handleOrderEvent);
+    const unsubscribeUpdated = onOrderUpdated(handleOrderEvent);
+
+    return () => {
+      unsubscribeCreated();
+      unsubscribeUpdated();
+    };
   }, [tableNumber]);
 
   const filteredProducts = useMemo(() => {
@@ -76,6 +125,7 @@ export default function CustomerMenu() {
 
   return (
     <div className={classes.customerPage}>
+      <div className={classes.heroSection}>
       <header
         className={
           heroImageUrl
@@ -116,6 +166,35 @@ export default function CustomerMenu() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+      </div>
+
+      {activeOrders.length > 0 && (
+        <section className={classes.activeOrdersSection}>
+          <div className={classes.activeOrdersHead}>
+            <h3>Active orders</h3>
+            <span>{activeOrders.length} in progress</span>
+          </div>
+          <div className={classes.activeOrdersList}>
+            {activeOrders.map((order) => (
+              <Link
+                key={order.order_id}
+                to={`/status/${order.order_id}?table=${tableNumber}`}
+                className={classes.activeOrderBanner}
+              >
+                <ClipboardList size={20} />
+                <div>
+                  <strong>Order #{order.order_id}</strong>
+                  <span>
+                    {order.user_name} · {getStatusLabel(order.status)} · ₪
+                    {Number(order.total).toFixed(2)}
+                  </span>
+                </div>
+                <span className={classes.trackLink}>Track</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {error && <p className={classes.error}>{error}</p>}
       {loading && <p className={classes.empty}>Loading menu...</p>}

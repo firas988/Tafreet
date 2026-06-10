@@ -1,54 +1,65 @@
+import {
+  formatOrderTime,
+  getStatusLabel,
+  WORKER_ACTION_LABELS,
+} from "../../utils/orderStatus.js";
 import classes from "./OrderCard.module.css";
 
 const statusClass = {
-  New: "new",
-  Accepted: "accepted",
-  Preparing: "preparing",
-  Ready: "ready",
-  Completed: "completed",
-  Rejected: "rejected",
+  submitted: "new",
+  processing: "preparing",
+  completed: "ready",
+  paid: "completed",
 };
 
-export default function OrderCard({ order, worker = false }) {
+export default function OrderCard({
+  order,
+  worker = false,
+  onAdvanceStatus,
+  updating = false,
+}) {
+  const nextActionLabel = WORKER_ACTION_LABELS[order.status];
+  const canAdvance = worker && Boolean(nextActionLabel) && !updating;
+
   return (
     <article className={classes.orderCard}>
       <div className={classes.orderHead}>
         <div>
-          <span className={classes.smallLabel}>Order #{order.id}</span>
-          <h3>Table {order.table}</h3>
+          <span className={classes.smallLabel}>Order #{order.order_id}</span>
+          <h3>Table {order.table_number}</h3>
           <p>
-            {order.customer} · {order.phone}
+            {order.customer_name || order.user_name}
+            {order.is_cash ? " · Cash" : ""}
           </p>
         </div>
         <span className={`status ${statusClass[order.status] || "new"}`}>
-          {order.status}
+          {getStatusLabel(order.status)}
         </span>
       </div>
 
       <div className={classes.orderItems}>
         {order.items.map((item) => (
-          <div key={item.name}>
-            <span>{item.name}</span>
-            <b>x{item.qty}</b>
+          <div key={`${order.order_id}-${item.product_id}`}>
+            <span>{item.product_name}</span>
+            <b>x{item.quantity}</b>
           </div>
         ))}
       </div>
 
       <div className={classes.orderFoot}>
-        <b>₪{order.total}</b>
-        <span>{order.time}</span>
+        <b>₪{Number(order.total).toFixed(2)}</b>
+        <span>{formatOrderTime(order.created_at)}</span>
       </div>
 
-      {worker && (
+      {canAdvance && (
         <div className={classes.actionRow}>
-          <button className="btn light" type="button">
-            Reject
-          </button>
-          <button className="btn" type="button">
-            Accept
-          </button>
-          <button className="btn dark" type="button">
-            Ready
+          <button
+            className="btn full"
+            type="button"
+            disabled={updating}
+            onClick={() => onAdvanceStatus(order)}
+          >
+            {updating ? "Updating..." : nextActionLabel}
           </button>
         </div>
       )}

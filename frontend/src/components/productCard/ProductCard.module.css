@@ -1,69 +1,119 @@
 .productCard {
   position: relative;
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 16px 44px rgba(64, 42, 22, 0.09);
+  box-shadow: 0 12px 36px rgba(64, 42, 22, 0.07);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(64, 42, 22, 0.13);
 }
 
 .productCard img {
   width: 100%;
-  height: 220px;
+  height: 200px;
   object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.productCard:hover img {
+  transform: scale(1.04);
 }
 
 .floatingBadge {
   position: absolute;
   top: 14px;
   left: 14px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.9);
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.94);
   border-radius: 99px;
   display: flex;
-  gap: 6px;
+  gap: 5px;
   align-items: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 .productInfo {
-  padding: 18px;
+  padding: 18px 20px 20px;
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .productInfo h3 {
-  margin: 0 0 7px;
+  margin: 0 0 6px;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
 }
 
 .productInfo p {
   color: var(--muted);
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.55;
+  font-size: 13px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .priceRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 4px;
 }
 
 .priceRow b {
-  font-size: 22px;
+  font-size: 21px;
+  letter-spacing: -0.5px;
+  color: var(--primary-dark);
 }
 
 .roundBtn {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
-  background: var(--primary-dark);
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--primary-dark), #4a3020);
   color: white;
-  font-size: 24px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 6px 18px rgba(44, 28, 18, 0.25);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.roundBtn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 22px rgba(44, 28, 18, 0.32);
+}
+
+.roundBtn:active {
+  transform: scale(0.96);
 }
 
 @media (max-width: 620px) {
+  .productCard {
+    border-radius: 20px;
+  }
+
   .productCard img {
-    height: 180px;
+    height: 190px;
+  }
+
+  .productInfo {
+    padding: 16px 18px 18px;
   }
 }

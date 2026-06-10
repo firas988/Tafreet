@@ -36,6 +36,36 @@
 
 .kanbanCol h2 {
   margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.count {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 99px;
+  background: #fff4e6;
+  color: var(--primary-dark);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.error {
+  color: #aa3131;
+  background: #ffe7e7;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  font-weight: 600;
+}
+
+.empty,
+.emptyCol {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 600;
 }
 
 @media (max-width: 1000px) {

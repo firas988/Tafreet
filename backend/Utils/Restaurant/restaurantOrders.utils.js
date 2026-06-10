@@ -2,12 +2,27 @@ const dbSingleton = require("../../Config/DB/dbSingleton.config");
 const db = dbSingleton.getConnection();
 
 const ALLOWED_STATUSES = ["submitted", "processing", "completed", "paid"];
+const ACTIVE_STATUSES = ["submitted", "processing", "completed"];
 
 const STATUS_TRANSITIONS = {
   submitted: "processing",
   processing: "completed",
   completed: "paid",
 };
+
+const ORDER_SELECT = `
+  SELECT
+    o.order_id,
+    o.user_name,
+    t.table_number,
+    o.status,
+    o.created_at,
+    p.payment_code,
+    p.is_cash
+  FROM orders o
+  JOIN tables t ON o.table_id = t.table_id
+  LEFT JOIN payments p ON p.order_id = o.order_id
+`;
 
 const formatOrderItems = (products = []) => {
   const items = products.map((product) => ({
@@ -45,61 +60,85 @@ const formatOrder = (order, products = []) => {
   };
 };
 
+const attachProductsToOrders = async (orders) => {
+  if (!orders.length) {
+    return [];
+  }
+
+  const orderIds = orders.map((order) => order.order_id);
+  const productsQuery = `
+    SELECT
+      ocp.order_id,
+      p.product_id,
+      p.product_name,
+      p.product_price,
+      p.image_path,
+      SUM(ocp.quantity) AS quantity
+    FROM order_contains_products ocp
+    JOIN products p ON ocp.product_id = p.product_id
+    WHERE ocp.order_id IN (?)
+    GROUP BY ocp.order_id, p.product_id, p.product_name, p.product_price, p.image_path
+  `;
+  const [orderProducts] = await db.promise().query(productsQuery, [orderIds]);
+
+  const productsByOrder = {};
+  for (const item of orderProducts) {
+    if (!productsByOrder[item.order_id]) {
+      productsByOrder[item.order_id] = [];
+    }
+    productsByOrder[item.order_id].push({
+      product_id: item.product_id,
+      product_name: item.product_name,
+      product_price: item.product_price,
+      image_path: item.image_path,
+      quantity: Number(item.quantity),
+    });
+  }
+
+  return orders.map((order) =>
+    formatOrder(order, productsByOrder[order.order_id] || []),
+  );
+};
+
 const restaurantOrders = async () => {
   try {
-    const ordersQuery = `
-      SELECT
-        o.order_id,
-        o.user_name,
-        t.table_number,
-        o.status,
-        o.created_at,
-        p.payment_code,
-        p.is_cash
-      FROM orders o
-      JOIN tables t ON o.table_id = t.table_id
-      LEFT JOIN payments p ON p.order_id = o.order_id
-      ORDER BY o.created_at DESC
-    `;
-    const [orders] = await db.promise().query(ordersQuery);
+    const [orders] = await db
+      .promise()
+      .query(`${ORDER_SELECT} ORDER BY o.created_at DESC`);
+
+    return attachProductsToOrders(orders);
+  } catch (err) {
+    throw new Error(err.message || err);
+  }
+};
+
+const getOrderById = async (orderId) => {
+  try {
+    const [orders] = await db
+      .promise()
+      .query(`${ORDER_SELECT} WHERE o.order_id = ? LIMIT 1`, [orderId]);
 
     if (orders.length === 0) {
-      return [];
+      throw new Error("Order not found");
     }
 
-    const orderIds = orders.map((o) => o.order_id);
-    const productsQuery = `
-      SELECT
-        ocp.order_id,
-        p.product_id,
-        p.product_name,
-        p.product_price,
-        p.image_path,
-        SUM(ocp.quantity) AS quantity
-      FROM order_contains_products ocp
-      JOIN products p ON ocp.product_id = p.product_id
-      WHERE ocp.order_id IN (?)
-      GROUP BY ocp.order_id, p.product_id, p.product_name, p.product_price, p.image_path
-    `;
-    const [orderProducts] = await db.promise().query(productsQuery, [orderIds]);
+    const [order] = await attachProductsToOrders(orders);
+    return order;
+  } catch (err) {
+    throw new Error(err.message || err);
+  }
+};
 
-    const productsByOrder = {};
-    for (const item of orderProducts) {
-      if (!productsByOrder[item.order_id]) {
-        productsByOrder[item.order_id] = [];
-      }
-      productsByOrder[item.order_id].push({
-        product_id: item.product_id,
-        product_name: item.product_name,
-        product_price: item.product_price,
-        image_path: item.image_path,
-        quantity: Number(item.quantity),
-      });
-    }
-
-    return orders.map((order) =>
-      formatOrder(order, productsByOrder[order.order_id] || []),
+const getActiveOrdersByTableNumber = async (tableNumber) => {
+  try {
+    const [orders] = await db.promise().query(
+      `${ORDER_SELECT}
+       WHERE t.table_number = ? AND o.status IN (?)
+       ORDER BY o.created_at DESC`,
+      [tableNumber, ACTIVE_STATUSES],
     );
+
+    return attachProductsToOrders(orders);
   } catch (err) {
     throw new Error(err.message || err);
   }
@@ -141,11 +180,14 @@ const updateRestaurantOrderStatus = async (orderId, status) => {
       throw new Error("Failed to update order status");
     }
 
+    const order = await getOrderById(orderId);
+
     return {
       success: true,
       message: "Order status updated successfully",
       order_id: Number(orderId),
       status,
+      order,
     };
   } catch (err) {
     throw new Error(err.message || err);
@@ -154,6 +196,10 @@ const updateRestaurantOrderStatus = async (orderId, status) => {
 
 module.exports = {
   restaurantOrders,
+  getOrderById,
+  getActiveOrdersByTableNumber,
   updateRestaurantOrderStatus,
   formatOrder,
+  STATUS_TRANSITIONS,
+  ACTIVE_STATUSES,
 };

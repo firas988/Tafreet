@@ -11,7 +11,8 @@ export function isPublicPath(pathname = "") {
   return (
     pathname.startsWith("/menu/public/") ||
     pathname === "/cart" ||
-    pathname === "/status"
+    pathname === "/status" ||
+    pathname.startsWith("/status/")
   );
 }
 
@@ -19,6 +20,8 @@ export function isPublicApi(url = "") {
   return (
     url.includes("/api/auth/check-login") ||
     url.includes("/api/menu/") ||
-    url.includes("/api/order/createOrder")
+    url.includes("/api/order/createOrder") ||
+    url.includes("/api/order/table/") ||
+    /\/api\/order\/\d+/.test(url)
   );
 }

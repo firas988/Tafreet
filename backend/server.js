@@ -1,10 +1,14 @@
 const express = require("express");
-const app = express();
+const http = require("http");
 const dotenv = require("dotenv");
 const session = require("express-session");
 const cors = require("cors");
+const { initSocket } = require("./Socket");
+
 dotenv.config();
 
+const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 4000;
 
 const authrization = require("./Routers/Auth/authrization");
@@ -21,7 +25,7 @@ const {
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
     credentials: true,
   }),
 );
@@ -42,6 +46,8 @@ app.use("/api/order", order);
 app.use("/api/restaurant", checkAdminSession, restaurant);
 app.use("/api/worker", checkWorkerSession, worker);
 
-app.listen(port, () => {
+initSocket(server);
+
+server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
